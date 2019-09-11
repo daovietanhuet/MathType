@@ -1,0 +1,14 @@
+#input, #input:focus {
+    /* border: 3px solid blue; */
+    border-radius: 2px;
+    /* -moz-outline-radius: 1px; */
+}
+
+#input[placeholder]:empty:before {
+    content: attr(placeholder);
+    color: #555; 
+}
+
+#input[placeholder]:empty:focus:before {
+    content: "";
+}

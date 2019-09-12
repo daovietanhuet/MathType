@@ -1,7 +1,5 @@
 #input, #input:focus {
-    /* border: 3px solid blue; */
     border-radius: 2px;
-    /* -moz-outline-radius: 1px; */
 }
 
 #input[placeholder]:empty:before {
@@ -11,4 +9,18 @@
 
 #input[placeholder]:empty:focus:before {
     content: "";
+}
+
+[contenteditable="true"]#input {
+    white-space: nowrap;
+    overflow: hidden;
+} 
+
+[contenteditable="true"]#input br {
+    display:none;
+}
+
+[contenteditable="true"]#input * {
+    display:inline;
+    white-space:nowrap;
 }

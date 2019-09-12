@@ -4,10 +4,28 @@ import {Box} from 'gestalt';
 class InputField extends React.Component{
     constructor(props) {
         super(props)
-        this.state = {
-            focus: false
+        this.handleInput = this._handleInput.bind(this);
+        this.handleKeyPress = this._handleKeyPress.bind(this);
+        this.handleKeyDown = this._handleKeyDown.bind(this);
+    }
+
+    _handleInput(event) {
+        this.props.onChange({value: event.target.innerText});
+    }
+
+    _handleKeyPress(event) {
+        if (event.key === "Enter") {
+            event.target.innerHTML = "";
+            this.props.onEnter();
         }
     }
+
+    _handleKeyDown(event) {
+        if (event.key === "Backspace" && event.target.innerText === "") {
+            this.props.onBackspace();
+        }
+    }
+
     render() {
         return (
             <Box
@@ -20,7 +38,9 @@ class InputField extends React.Component{
                     color="lightGray" 
                     suppressContentEditableWarning={true} 
                     placeholder="Type Something Creative... "
-                    onInput={(e) => {this.props.onChange({value: e.target.innerText})}}
+                    onInput={this.handleInput}
+                    onKeyPress={this.handleKeyPress}
+                    onKeyDown={this.handleKeyDown}
                 >
                     {/* <span style={{color: "red"}}></span>
                     <span style={{color: "blue"}}></span> */}

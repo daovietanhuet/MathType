@@ -25,13 +25,19 @@ class Home extends React.Component {
     obj.innerHTML = evt.target.value;
     let value = obj.innerText;
     let parts = value.split('"');
-    let html = obj.innerHTML;
-    //console.log(parts, obj.innerHTML)
-    // let html = "";
-    // for(let i = 0 ; i < parts.length; i++) {
-    //   html += (i%2 == 0 && parts[i] !== "") ? '<span class="string">' + parts[i] + '</span>': '<span class="fomular">' + parts[i] + '</span>';
-    //   if(i != parts.length-1) html += '"';
-    // }
+    let html = "";
+    for(let i = 0 ; i < parts.length; i++) {
+      let span = document.createElement("SPAN");
+      let div = document.createElement("DIV");
+      span.innerHTML = parts[i];
+      if(parts[i] !== "") {
+        (i%2 == 0) ? span.className = "string": span.className = "fomular";
+        div.appendChild(span)
+        html += div.innerHTML;
+      }
+      if(i != parts.length-1) html += '"';
+    }
+    console.log(parts, html)
     this.setState({
       value: obj.innerText,
       html: html

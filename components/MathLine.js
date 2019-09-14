@@ -7,7 +7,7 @@ const MathLine = (props) => {
                 fontSize: "1rem", 
                 padding: "0.5rem", 
                 opacity: props.opacity || 1, 
-                overflowX: "scroll", 
+                overflowX: props.overflowX || "hidden", 
                 backgroundColor: props.color, 
                 borderRadius: "0.2rem",
                 cursor: "text"

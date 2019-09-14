@@ -1,26 +1,42 @@
-#input, #input:focus {
-    border-radius: 2px;
+body {
+    overflow: hidden;
 }
 
-#input[placeholder]:empty:before {
+.input, #input:focus {
+    border-radius: 2px;
+    border: 0.2rem solid #4a90e2;
+    padding: 0.5rem;
+    font-size: 1rem;
+    outline: none;
+}
+
+.input[placeholder]:empty:before {
     content: attr(placeholder);
     color: #555; 
 }
 
-#input[placeholder]:empty:focus:before {
-    content: "";
-}
-
-[contenteditable="true"]#input {
+[contenteditable="true"].input {
     white-space: nowrap;
     overflow: hidden;
 } 
 
-[contenteditable="true"]#input br {
+[contenteditable="true"].input br {
     display:none;
 }
 
-[contenteditable="true"]#input * {
+[contenteditable="true"].input * {
     display:inline;
     white-space:nowrap;
+}
+
+#MathJax_Message {
+    display: none !important;
+}
+
+.string {
+    color: #4a90e2;
+}
+
+.fomular {
+    color: orange;
 }

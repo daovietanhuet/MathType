@@ -34,9 +34,11 @@ body {
 }
 
 .string {
-    color: #4a90e2;
+    /* color: #4a90e2; */
+    color: blue;
 }
 
 .fomular {
-    color: orange;
+    /* color: orange; */
+    color: green;
 }

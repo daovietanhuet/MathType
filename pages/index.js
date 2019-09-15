@@ -26,16 +26,19 @@ class Home extends React.Component {
     let value = obj.innerText;
     let parts = value.split('"');
     let html = "";
+
     for(let i = 0 ; i < parts.length; i++) {
       let span = document.createElement("SPAN");
       let div = document.createElement("DIV");
-      span.innerHTML = parts[i];
-      if(parts[i] !== "") {
+
+      if (i%2 === 1) span.innerHTML = (i < parts.length -1) ? '\"' + parts[i] + "\"" : "\"" + parts[i];
+      else span.innerHTML = parts[i];
+
+      if(parts[i] !== "" || i%2 == 1) {
         (i%2 == 0) ? span.className = "string": span.className = "fomular";
         div.appendChild(span)
         html += div.innerHTML;
       }
-      if(i != parts.length-1) html += '"';
     }
     console.log(parts, html)
     this.setState({

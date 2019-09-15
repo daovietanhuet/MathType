@@ -11,6 +11,7 @@ class Home extends React.Component {
     this.handleChange = this._handleChange.bind(this);
     this.handleKeyDown = this._handleKeyDown.bind(this);
     this.handleSubmit = this._handleSubmit.bind(this);
+    this.edit = React.createRef();
     this.contentEditable = React.createRef();
     this.state = {
       lines: [],
@@ -30,17 +31,14 @@ class Home extends React.Component {
     for(let i = 0 ; i < parts.length; i++) {
       let span = document.createElement("SPAN");
       let div = document.createElement("DIV");
-
-      if (i%2 === 1) span.innerHTML = (i < parts.length -1) ? '\"' + parts[i] + "\"" : "\"" + parts[i];
-      else span.innerHTML = parts[i];
-
-      if(parts[i] !== "" || i%2 == 1) {
-        (i%2 == 0) ? span.className = "string": span.className = "fomular";
+      if (i%2 === 1) {
+        span.innerHTML = (i < parts.length -1) ? '\"' + parts[i] + "\"" : "\"" + parts[i];
+        span.className = "fomular";
         div.appendChild(span)
         html += div.innerHTML;
-      }
+      } else html += parts[i];
     }
-    console.log(parts, html)
+
     this.setState({
       value: obj.innerText,
       html: html
@@ -55,14 +53,16 @@ class Home extends React.Component {
         value: "",
         html: ""
       })
+      //console.log(this.edit)
       evt.preventDefault();
     }
   }
 
   _handleKeyDown = evt => {
+    console.log(this.state.value, this.state.html)
     switch (evt.key) {
       case 'Backspace': 
-        if(this.state.value === "") {
+        if(this.state.value === "" || this.state.html === "") {
           evt.preventDefault();
           let lines = this.state.lines;
           let lineHTMLs = this.state.lineHTMLs;
@@ -78,11 +78,15 @@ class Home extends React.Component {
     }
   }
 
+  componentDidUpdate() {
+    this.edit.current.scrollTop = this.edit.current.scrollHeight - this.edit.current.clientHeight;
+  }
+
   render() {
     return (
       <Box display='flex'>
         <Box column={9}>
-          <Box maxHeight="85vh" overflow="scrollY">
+          <Box maxHeight="85vh" overflow="scrollY" ref={this.edit}>
             {this.state.lines.map((ele, index) => {
               return <MathLine ascii={'"' + ele + '"'} key={index}/>
             })}

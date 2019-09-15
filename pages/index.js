@@ -53,13 +53,11 @@ class Home extends React.Component {
         value: "",
         html: ""
       })
-      //console.log(this.edit)
       evt.preventDefault();
     }
   }
 
   _handleKeyDown = evt => {
-    console.log(this.state.value, this.state.html)
     switch (evt.key) {
       case 'Backspace': 
         if(this.state.value === "" || this.state.html === "") {

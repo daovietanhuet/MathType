@@ -1,6 +1,6 @@
 import React from 'react';
 import {Box} from 'gestalt';
-import ContentEditable from 'react-contenteditable';
+import EditLine from '../components/EditLine';
 import MathLine from '../components/MathLine';
 import "gestalt/dist/gestalt.css";
 import "./style.css";
@@ -11,6 +11,7 @@ class Home extends React.Component {
     this.handleChange = this._handleChange.bind(this);
     this.handleKeyDown = this._handleKeyDown.bind(this);
     this.handleSubmit = this._handleSubmit.bind(this);
+    this.createLines = this._createLines.bind(this);
     this.edit = React.createRef();
     this.contentEditable = React.createRef();
     this.state = {
@@ -76,6 +77,13 @@ class Home extends React.Component {
     }
   }
 
+  _createLines() {
+    let lines = this.state.lines.map((ele, index) => {
+      return <MathLine ascii={'"' + ele + '"'} key={index}/>
+    })
+    return lines;
+  }
+
   componentDidUpdate() {
     this.edit.current.scrollTop = this.edit.current.scrollHeight - this.edit.current.clientHeight;
   }
@@ -85,22 +93,17 @@ class Home extends React.Component {
       <Box display='flex'>
         <Box column={9}>
           <Box maxHeight="85vh" overflow="scrollY" ref={this.edit}>
-            {this.state.lines.map((ele, index) => {
-              return <MathLine ascii={'"' + ele + '"'} key={index}/>
-            })}
+            {this.createLines()}
           </Box>
           <Box maxHeight="15vh" height="15vh">
-            <MathLine ascii={'"' + this.state.value + '"'} opacity={0.45} color="lightgray"/>
-            <ContentEditable
-              innerRef={this.contentEditable}
+            <EditLine 
               html={this.state.html}
+              value={this.state.value}
+              innerRef={this.contentEditable}
               disabled={false}      
               onChange={this.handleChange} 
               onKeyDown={this.handleKeyDown}
               onKeyPress={this.handleSubmit}
-              placeholder="Write Something Creative..."
-              tagName='div' 
-              className="input"
             />
           </Box>
         </Box>

@@ -10,8 +10,9 @@ const MathLine = (props) => {
                 overflowX: props.overflowX || "hidden", 
                 backgroundColor: props.color, 
                 borderRadius: "0.2rem",
-                cursor: "text"
+                cursor: "pointer"
             }}
+            onClick = {props.onClick}
         >
             <MathJax.Context input='ascii'>
                 <div>

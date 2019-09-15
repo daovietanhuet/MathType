@@ -56,7 +56,7 @@ class Home extends React.Component {
       this.setState({
         lines: lines,
         lineHTMLs: lineHTMLs,
-        position: this.state.position + 1
+        position: this.state.position + 1 >= this.state.lines.length -1 ? this.state.lines.length - 1 : this.state.position + 1
       })
       evt.preventDefault();
     }
@@ -78,13 +78,29 @@ class Home extends React.Component {
           evt.preventDefault();
         }
         break;
+      case 'ArrowUp': 
+        this.setState({
+          position: this.state.position - 1 <= 0 ? 0: this.state.position - 1
+        })
+        break;
+      case 'ArrowDown': 
+        this.setState({
+          position: this.state.position + 1 >= this.state.lines.length -1 ? this.state.lines.length - 1 : this.state.position + 1
+        })
+        break;
       default: break;
     }
   }
 
+  _handleEditLine(index) {
+    this.setState({
+      position: index
+    })
+  }
+
   _createLines() {
     let lines = this.state.lines.map((ele, index) => {
-      return <MathLine ascii={'"' + ele + '"'} key={index}/>
+      return <MathLine ascii={'"' + ele + '"'} key={index} onClick={evt => this._handleEditLine(index)}/>
     });
     lines ? lines : [];
     lines[this.state.position] = <EditLine 

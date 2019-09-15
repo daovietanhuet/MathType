@@ -32,7 +32,7 @@ class EditLine extends React.Component {
 
     render() {
         return (
-            <Box maxHeight="15vh" height="15vh">
+            <Box maxHeight="15vh">
                 <MathLine ascii={'"' + this.props.value + '"'} opacity={0.45} color="lightgray"/>
                 <ContentEditable
                     innerRef={this.contentEditable}

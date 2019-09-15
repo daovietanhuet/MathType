@@ -8,21 +8,19 @@ import "./style.css";
 class Home extends React.Component {
   constructor(props) {
     super(props)
-    this.handleChange = this._handleChange.bind(this);
     this.handleKeyDown = this._handleKeyDown.bind(this);
     this.handleSubmit = this._handleSubmit.bind(this);
+    this.handleChange = this._handleChange.bind(this);
     this.createLines = this._createLines.bind(this);
     this.edit = React.createRef();
-    this.contentEditable = React.createRef();
     this.state = {
+      position: 0,
       lines: [],
-      lineHTMLs: [],
-      value: "",
-      html: ""
+      lineHTMLs: []
     };
   }
 
-  _handleChange = evt => {
+  _handleChange = (evt) => {
     let obj = document.createElement("DIV");
     obj.innerHTML = evt.target.value;
     let value = obj.innerText;
@@ -39,38 +37,45 @@ class Home extends React.Component {
         html += div.innerHTML;
       } else html += parts[i];
     }
-
+    let lines = this.state.lines;
+    let lineHTMLs = this.state.lineHTMLs;
+    lines[this.state.position] = obj.innerText;
+    lineHTMLs[this.state.position] = html;
     this.setState({
-      value: obj.innerText,
-      html: html
+      lines: lines,
+      lineHTMLs: lineHTMLs
     });
-  };
+  }
 
-  _handleSubmit = evt => {
+  _handleSubmit = (evt) => {
     if(evt.key === 'Enter') {
+      let lines = this.state.lines;
+      let lineHTMLs = this.state.lineHTMLs;
+      lines.splice(this.state.position + 1, 0, "");
+      lineHTMLs.splice(this.state.position + 1, 0, "");
       this.setState({
-        lines: [...this.state.lines, this.state.value],
-        lineHTMLs: [...this.state.lineHTMLs, this.state.html],
-        value: "",
-        html: ""
+        lines: lines,
+        lineHTMLs: lineHTMLs,
+        position: this.state.position + 1
       })
       evt.preventDefault();
     }
   }
 
-  _handleKeyDown = evt => {
+  _handleKeyDown = (evt) => {
     switch (evt.key) {
       case 'Backspace': 
-        if(this.state.value === "" || this.state.html === "") {
-          evt.preventDefault();
+        if(this.state.lines[this.state.position] === "" || this.state.lineHTMLs[this.state.position] === "") {
           let lines = this.state.lines;
           let lineHTMLs = this.state.lineHTMLs;
+          lines.splice(this.state.position, 1);
+          lineHTMLs.splice(this.state.position, 1);
           this.setState({
-            value: (lines.pop() || "") ,
-            html: (lineHTMLs.pop() || "") ,
+            position: this.state.position - 1 <= 0 ? 0: this.state.position - 1,
             lines: lines || [],
             lineHTMLs: lineHTMLs || []
           })
+          evt.preventDefault();
         }
         break;
       default: break;
@@ -80,13 +85,22 @@ class Home extends React.Component {
   _createLines() {
     let lines = this.state.lines.map((ele, index) => {
       return <MathLine ascii={'"' + ele + '"'} key={index}/>
-    })
+    });
+    lines ? lines : [];
+    lines[this.state.position] = <EditLine 
+        html={this.state.lineHTMLs[this.state.position] || ""}
+        value={this.state.lines[this.state.position] || ""}
+        onKeyDown={this.handleKeyDown}
+        onKeyPress={this.handleSubmit}
+        onChange={this.handleChange}
+        key={"edit"}
+    />
     return lines;
   }
 
-  componentDidUpdate() {
-    this.edit.current.scrollTop = this.edit.current.scrollHeight - this.edit.current.clientHeight;
-  }
+  // componentDidUpdate() {
+  //   this.edit.current.scrollTop = this.edit.current.scrollHeight - this.edit.current.clientHeight;
+  // }
 
   render() {
     return (
@@ -94,17 +108,6 @@ class Home extends React.Component {
         <Box column={9}>
           <Box maxHeight="85vh" overflow="scrollY" ref={this.edit}>
             {this.createLines()}
-          </Box>
-          <Box maxHeight="15vh" height="15vh">
-            <EditLine 
-              html={this.state.html}
-              value={this.state.value}
-              innerRef={this.contentEditable}
-              disabled={false}      
-              onChange={this.handleChange} 
-              onKeyDown={this.handleKeyDown}
-              onKeyPress={this.handleSubmit}
-            />
           </Box>
         </Box>
         <Box column={3}>

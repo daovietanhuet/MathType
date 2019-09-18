@@ -41,7 +41,7 @@ class Home extends React.Component {
           state.lineHTMLs.splice(this.state.position + 1, 0, "");
           return ({
             lineHTMLs: state.lineHTMLs,
-            position: state.position + 1 >= state.lineHTMLs.length -1 ? state.lineHTMLs.length - 1 : state.position + 1
+            position: state.position + 1 >= state.lineHTMLs.length - 1 ? state.lineHTMLs.length - 1 : state.position + 1
           })
       }) 
       evt.preventDefault();
@@ -69,7 +69,7 @@ class Home extends React.Component {
         break;
       case 'ArrowDown': 
         this.setState({
-          position: this.state.position + 1 >= this.state.lineHTMLs.length -1 ? this.state.lineHTMLs.length - 1 <= 0 ? 0 : this.state.lineHTMLs.length - 1 : this.state.position + 1
+          position: this.state.position + 1 >= this.state.lineHTMLs.length - 1 ? this.state.lineHTMLs.length - 1 <= 0 ? 0 : this.state.lineHTMLs.length - 1 : this.state.position + 1
         })
         break;
       default: break;

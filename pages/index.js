@@ -20,21 +20,14 @@ class Home extends React.Component {
   }
 
   _handleChange = (evt) => {
-    let obj = document.createElement("DIV");
-    obj.innerHTML = evt.target.value;
-    let parts = obj.innerText.split('"');
-    let html = "";
-
-    for(let i = 0 ; i < parts.length; i++) {
+    let html = evt.currentTarget.innerText.split('"').map((ele, i) => {
       let span = document.createElement("SPAN");
-      let div = document.createElement("DIV");
       if (i%2 === 1) {
-        span.innerHTML = (i < parts.length -1) ? '\"' + parts[i] + "\"" : "\"" + parts[i];
+        span.innerHTML = (i < evt.currentTarget.innerText.split('"').length -1) ? '\"' + ele + "\"" : "\"" + ele;
         span.className = "fomular";
-        div.appendChild(span);
-        html += div.innerHTML;
-      } else html += parts[i];
-    }
+        return span.outerHTML;
+      } else return ele;
+    }).join("")
 
     this.setState((state, props) => {
       state.lineHTMLs[this.state.position] = html;

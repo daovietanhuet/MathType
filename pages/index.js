@@ -12,10 +12,9 @@ class Home extends React.Component {
     this.handleSubmit = this._handleSubmit.bind(this);
     this.handleChange = this._handleChange.bind(this);
     this.createLines = this._createLines.bind(this);
-    this.edit = React.createRef();
+    this.editLine = React.createRef();
     this.state = {
       position: 0,
-      lines: [],
       lineHTMLs: []
     };
   }
@@ -23,8 +22,7 @@ class Home extends React.Component {
   _handleChange = (evt) => {
     let obj = document.createElement("DIV");
     obj.innerHTML = evt.target.value;
-    let value = obj.innerText;
-    let parts = value.split('"');
+    let parts = obj.innerText.split('"');
     let html = "";
 
     for(let i = 0 ; i < parts.length; i++) {
@@ -33,31 +31,26 @@ class Home extends React.Component {
       if (i%2 === 1) {
         span.innerHTML = (i < parts.length -1) ? '\"' + parts[i] + "\"" : "\"" + parts[i];
         span.className = "fomular";
-        div.appendChild(span)
+        div.appendChild(span);
         html += div.innerHTML;
       } else html += parts[i];
     }
-    let lines = this.state.lines;
-    let lineHTMLs = this.state.lineHTMLs;
-    lines[this.state.position] = obj.innerText;
-    lineHTMLs[this.state.position] = html;
-    this.setState({
-      lines: lines,
-      lineHTMLs: lineHTMLs
+
+    this.setState((state, props) => {
+      state.lineHTMLs[this.state.position] = html;
+      return ({lineHTMLs: this.state.lineHTMLs})
     });
   }
 
-  _handleSubmit = (evt) => {
+  _handleSubmit = async (evt) => {
     if(evt.key === 'Enter') {
-      let lines = this.state.lines;
-      let lineHTMLs = this.state.lineHTMLs;
-      lines.splice(this.state.position + 1, 0, "");
-      lineHTMLs.splice(this.state.position + 1, 0, "");
-      this.setState({
-        lines: lines,
-        lineHTMLs: lineHTMLs,
-        position: this.state.position + 1 >= this.state.lines.length -1 ? this.state.lines.length - 1 : this.state.position + 1
-      })
+      this.setState((state, props) => {
+          state.lineHTMLs.splice(this.state.position + 1, 0, "");
+          return ({
+            lineHTMLs: state.lineHTMLs,
+            position: state.position + 1 >= state.lineHTMLs.length -1 ? state.lineHTMLs.length - 1 : state.position + 1
+          })
+      }) 
       evt.preventDefault();
     }
   }
@@ -65,15 +58,13 @@ class Home extends React.Component {
   _handleKeyDown = (evt) => {
     switch (evt.key) {
       case 'Backspace': 
-        if(this.state.lines[this.state.position] === "" || this.state.lineHTMLs[this.state.position] === "") {
-          let lines = this.state.lines;
-          let lineHTMLs = this.state.lineHTMLs;
-          lines.splice(this.state.position, 1);
-          lineHTMLs.splice(this.state.position, 1);
-          this.setState({
-            position: this.state.position - 1 <= 0 ? 0: this.state.position - 1,
-            lines: lines || [],
-            lineHTMLs: lineHTMLs || []
+        if(this.state.lineHTMLs[this.state.position] === "") {
+          this.setState((state, props) => { 
+            state.lineHTMLs.splice(this.state.position, 1);
+            return ({
+              position: state.position - 1 <= 0 ? 0: state.position - 1,
+              lineHTMLs: state.lineHTMLs || []
+            })
           })
           evt.preventDefault();
         }
@@ -85,7 +76,7 @@ class Home extends React.Component {
         break;
       case 'ArrowDown': 
         this.setState({
-          position: this.state.position + 1 >= this.state.lines.length -1 ? this.state.lines.length - 1 : this.state.position + 1
+          position: this.state.position + 1 >= this.state.lineHTMLs.length -1 ? this.state.lineHTMLs.length - 1 <= 0 ? 0 : this.state.lineHTMLs.length - 1 : this.state.position + 1
         })
         break;
       default: break;
@@ -99,35 +90,30 @@ class Home extends React.Component {
   }
 
   _createLines() {
-    let lines = this.state.lines.map((ele, index) => {
-      return <MathLine ascii={'"' + ele + '"'} key={index} onClick={evt => this._handleEditLine(index)}/>
+    let lines = this.state.lineHTMLs.map((ele, index) => {
+      return <MathLine html={ele} key={index} onClick={evt => this._handleEditLine(index)} index={index +1}/>
     });
     lines ? lines : [];
     lines[this.state.position] = <EditLine 
         html={this.state.lineHTMLs[this.state.position] || ""}
-        value={this.state.lines[this.state.position] || ""}
         onKeyDown={this.handleKeyDown}
         onKeyPress={this.handleSubmit}
         onChange={this.handleChange}
         key={"edit"}
+        innerRef={this.editLine}
     />
     return lines;
   }
-
-  // componentDidUpdate() {
-  //   this.edit.current.scrollTop = this.edit.current.scrollHeight - this.edit.current.clientHeight;
-  // }
 
   render() {
     return (
       <Box display='flex'>
         <Box column={9}>
-          <Box maxHeight="85vh" overflow="scrollY" ref={this.edit}>
+          <Box>
             {this.createLines()}
           </Box>
         </Box>
         <Box column={3}>
-
         </Box>
       </Box>
     );

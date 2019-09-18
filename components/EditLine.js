@@ -10,12 +10,6 @@ class EditLine extends React.Component {
         this.handleKeyDown = this._handleKeyDown.bind(this);
         this.onChange = this._handleChange.bind(this);
         this.contentEditable = React.createRef();
-        this.state = {
-            value: this.props.value,
-            html: this.props.html,
-            _value: this.props.value,
-            _html: this.props.html
-        }
     }
 
     _handleChange = evt => {
@@ -32,8 +26,8 @@ class EditLine extends React.Component {
 
     render() {
         return (
-            <Box maxHeight="15vh">
-                <MathLine ascii={'"' + this.props.value + '"'} opacity={0.45} color="lightgray"/>
+            <Box id="input_line" ref={this.props.innerRef} marginBottom={3}>
+                <MathLine html={this.props.html} opacity={0.45} color="lightgray"/>
                 <ContentEditable
                     innerRef={this.contentEditable}
                     html={this.props.html}

@@ -1,11 +1,8 @@
-body {
-    overflow: hidden;
-}
-
 .input, #input:focus {
     border-radius: 2px;
     border: 0.2rem solid #4a90e2;
     padding: 0.5rem;
+    padding-left: 2rem;
     font-size: 1rem;
     outline: none;
     color: blue;
@@ -42,4 +39,14 @@ body {
 .fomular {
     /* color: orange; */
     color: green;
+}
+
+.math_line[index]::before{
+    content: attr(index);
+    position: absolute;
+    left: 0.2rem;
+    width: 1rem !important;
+    padding-top: auto;
+    padding-bottom: auto;
+    color: #cc6600
 }

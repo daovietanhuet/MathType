@@ -28,7 +28,7 @@ class MathLine extends React.Component {
         return (
             <div style={{
                     fontSize: "1rem", 
-                    padding: "0.2rem", 
+                    padding: "0.3rem", 
                     opacity: props.opacity || 1, 
                     overflowX: props.overflowX || "hidden", 
                     backgroundColor: props.color, 

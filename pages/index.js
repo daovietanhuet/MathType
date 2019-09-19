@@ -84,7 +84,7 @@ class Home extends React.Component {
 
   _createLines() {
     let lines = this.state.lineHTMLs.map((ele, index) => {
-      return <MathLine html={ele} key={index} onClick={evt => this._handleEditLine(index)} index={index +1}/>
+      return <MathLine html={ele} key={index} onClick={evt => this._handleEditLine(index)} index={"~"}/>
     });
     lines ? lines : [];
     lines[this.state.position] = <EditLine 

@@ -28,13 +28,14 @@ class MathLine extends React.Component {
         return (
             <div style={{
                     fontSize: "1rem", 
-                    padding: "0.5rem", 
+                    padding: "0.2rem", 
                     opacity: props.opacity || 1, 
                     overflowX: props.overflowX || "hidden", 
                     backgroundColor: props.color, 
                     borderRadius: "0.2rem",
                     cursor: "text",
-                    paddingLeft: "2rem"
+                    paddingLeft: "2rem",
+                    minHeight: "1.5rem"
                 }}
                 onClick = {props.onClick}
                 className="math_line"

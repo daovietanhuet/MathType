@@ -16,7 +16,7 @@ class Home extends React.Component {
     this.editLine = React.createRef();
     this.state = {
       position: 0,
-      lineHTMLs: []
+      lineHTMLs: [""]
     };
   }
 
@@ -25,7 +25,7 @@ class Home extends React.Component {
       if(pos !== null && pos !== undefined) value !== null ? state.lineHTMLs.splice(pos, number, value) : state.lineHTMLs.splice(pos, number);
       return ({
         position: newPos,
-        lineHTMLs: state.lineHTMLs || []
+        lineHTMLs: state.lineHTMLs.length === 0 ? [""] : state.lineHTMLs
       })
     })
   }
@@ -68,19 +68,17 @@ class Home extends React.Component {
   }
 
   _createLines() {
-    let lines = this.state.lineHTMLs.map((ele, index) => {
-      return <MathLine html={ele} key={index} onClick={evt => this.handleArray(index)} index={"~"}/>
+    return this.state.lineHTMLs.map((ele, index) => {
+      if(index === this.state.position) return <EditLine 
+          html={this.state.lineHTMLs[this.state.position] || ""}
+          onKeyDown={this.handleKeyDown}
+          onKeyPress={this.handleSubmit}
+          onChange={this.handleChange}
+          key={"edit"}
+          innerRef={this.editLine}
+      />
+      else return <MathLine html={ele} key={index} onClick={evt => this.handleArray(index)} index={"~"}/>
     });
-    lines ? lines : [];
-    lines[this.state.position] = <EditLine 
-        html={this.state.lineHTMLs[this.state.position] || ""}
-        onKeyDown={this.handleKeyDown}
-        onKeyPress={this.handleSubmit}
-        onChange={this.handleChange}
-        key={"edit"}
-        innerRef={this.editLine}
-    />
-    return lines;
   }
 
   render() {

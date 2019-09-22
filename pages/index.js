@@ -29,7 +29,7 @@ class Home extends React.Component {
     }).join("")
 
     this.setState((state, props) => {
-      state.lineHTMLs[this.state.position] = html;
+      state.lineHTMLs[state.position] = html;
       return ({lineHTMLs: state.lineHTMLs})
     });
   }
@@ -37,7 +37,7 @@ class Home extends React.Component {
   _handleSubmit = async (evt) => {
     if(evt.key === 'Enter') {
       this.setState((state, props) => {
-          state.lineHTMLs.splice(this.state.position + 1, 0, "");
+          state.lineHTMLs.splice(state.position + 1, 0, "");
           return ({
             lineHTMLs: state.lineHTMLs,
             position: Math.min(state.position + 1, state.lineHTMLs.length - 1)
@@ -52,7 +52,7 @@ class Home extends React.Component {
       case 'Backspace': 
         if(this.state.lineHTMLs[this.state.position] === "") {
           this.setState((state, props) => { 
-            state.lineHTMLs.splice(this.state.position, 1);
+            state.lineHTMLs.splice(state.position, 1);
             return ({
               position: Math.max(state.position - 1, 0),
               lineHTMLs: state.lineHTMLs || []

@@ -24,7 +24,6 @@ class Home extends React.Component {
       let span = document.createElement("SPAN");
       if (i%2 === 1) {
         span.innerHTML = (i < evt.currentTarget.innerText.split('"').length -1) ? '\"' + ele + "\"" : "\"" + ele;
-        span.className = "fomular";
         return span.outerHTML;
       } else return ele;
     }).join("")

@@ -13,6 +13,10 @@
     color: #555; 
 }
 
+.input > span {
+    color:green;
+}
+
 [contenteditable="true"].input {
     white-space: nowrap;
     overflow: hidden;

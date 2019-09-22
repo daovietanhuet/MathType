@@ -12,11 +12,22 @@ class Home extends React.Component {
     this.handleSubmit = this._handleSubmit.bind(this);
     this.handleChange = this._handleChange.bind(this);
     this.createLines = this._createLines.bind(this);
+    this.handleArray = this._handleArray.bind(this);
     this.editLine = React.createRef();
     this.state = {
       position: 0,
       lineHTMLs: []
     };
+  }
+
+  _handleArray = (newPos, pos, number, value) => {
+    this.setState((state, props) => { 
+      value !== null ? state.lineHTMLs.splice(pos, number, value) : state.lineHTMLs.splice(pos, number);
+      return ({
+        position: newPos,
+        lineHTMLs: state.lineHTMLs || []
+      })
+    })
   }
 
   _handleChange = (evt) => {
@@ -28,21 +39,12 @@ class Home extends React.Component {
       } else return ele;
     }).join("")
 
-    this.setState((state, props) => {
-      state.lineHTMLs[state.position] = html;
-      return ({lineHTMLs: state.lineHTMLs})
-    });
+    this.handleArray(this.state.position, this.state.position, 1, html)
   }
 
   _handleSubmit = async (evt) => {
     if(evt.key === 'Enter') {
-      this.setState((state, props) => {
-          state.lineHTMLs.splice(state.position + 1, 0, "");
-          return ({
-            lineHTMLs: state.lineHTMLs,
-            position: Math.min(state.position + 1, state.lineHTMLs.length - 1)
-          })
-      }) 
+      this.handleArray(Math.min(this.state.position + 1, this.state.lineHTMLs.length), this.state.position + 1, 0, "")
       evt.preventDefault();
     }
   }
@@ -51,13 +53,7 @@ class Home extends React.Component {
     switch (evt.key) {
       case 'Backspace': 
         if(this.state.lineHTMLs[this.state.position] === "") {
-          this.setState((state, props) => { 
-            state.lineHTMLs.splice(state.position, 1);
-            return ({
-              position: Math.max(state.position - 1, 0),
-              lineHTMLs: state.lineHTMLs || []
-            })
-          })
+          this.handleArray(Math.max(this.state.position - 1, 0), this.state.position, 1, null)
           evt.preventDefault();
         }
         break;

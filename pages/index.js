@@ -22,7 +22,7 @@ class Home extends React.Component {
 
   _handleArray = (newPos, pos, number, value) => {
     this.setState((state, props) => { 
-      value !== null ? state.lineHTMLs.splice(pos, number, value) : state.lineHTMLs.splice(pos, number);
+      if(pos !== null && pos !== undefined) value !== null ? state.lineHTMLs.splice(pos, number, value) : state.lineHTMLs.splice(pos, number);
       return ({
         position: newPos,
         lineHTMLs: state.lineHTMLs || []
@@ -32,8 +32,8 @@ class Home extends React.Component {
 
   _handleChange = (evt) => {
     let html = evt.currentTarget.innerText.split('"').map((ele, i, arr) => {
-      let span = document.createElement("SPAN");
       if (i%2 === 1) {
+        let span = document.createElement("SPAN");
         span.innerHTML = (i < arr.length -1) ? '\"' + ele + "\"" : "\"" + ele;
         return span.outerHTML;
       } else return ele;
@@ -58,23 +58,17 @@ class Home extends React.Component {
         }
         break;
       case 'ArrowUp': 
-        this.setState((state, props) => ({
-          position:  Math.max(state.position - 1, 0)
-        }))
+        this.handleArray(Math.max(this.state.position - 1, 0))
         break;
       case 'ArrowDown': 
-        this.setState((state, props) => ({
-          position:  Math.min(state.position + 1, Math.max(state.lineHTMLs.length - 1, 0))
-        }))
+        this.handleArray(Math.min(this.state.position + 1, Math.max(this.state.lineHTMLs.length - 1, 0)))
         break;
       default: break;
     }
   }
 
   _handleEditLine(index) {
-    this.setState({
-      position: index
-    })
+    this.handleArray(index)
   }
 
   _createLines() {

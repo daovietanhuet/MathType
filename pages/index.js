@@ -30,7 +30,7 @@ class Home extends React.Component {
 
     this.setState((state, props) => {
       state.lineHTMLs[this.state.position] = html;
-      return ({lineHTMLs: this.state.lineHTMLs})
+      return ({lineHTMLs: state.lineHTMLs})
     });
   }
 

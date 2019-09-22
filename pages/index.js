@@ -20,10 +20,10 @@ class Home extends React.Component {
   }
 
   _handleChange = (evt) => {
-    let html = evt.currentTarget.innerText.split('"').map((ele, i) => {
+    let html = evt.currentTarget.innerText.split('"').map((ele, i, arr) => {
       let span = document.createElement("SPAN");
       if (i%2 === 1) {
-        span.innerHTML = (i < evt.currentTarget.innerText.split('"').length -1) ? '\"' + ele + "\"" : "\"" + ele;
+        span.innerHTML = (i < arr.length -1) ? '\"' + ele + "\"" : "\"" + ele;
         return span.outerHTML;
       } else return ele;
     }).join("")

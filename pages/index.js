@@ -32,11 +32,9 @@ class Home extends React.Component {
 
   _handleChange = (evt) => {
     let html = evt.currentTarget.innerText.split('"').map((ele, i, arr) => {
-      if (i%2 === 1) {
-        let span = document.createElement("SPAN");
-        span.innerHTML = (i < arr.length -1) ? '\"' + ele + "\"" : "\"" + ele;
-        return span.outerHTML;
-      } else return ele;
+      if (i%2 === 0) return ele;
+      let span = Object.assign(document.createElement("SPAN"), {innerHTML: (i < arr.length -1) ? '\"' + ele + "\"" : "\"" + ele});
+      return span.outerHTML;
     }).join("")
 
     this.handleArray(this.state.position, this.state.position, 1, html)
@@ -52,7 +50,7 @@ class Home extends React.Component {
   _handleKeyDown = (evt) => {
     switch (evt.key) {
       case 'Backspace': 
-        if(this.state.lineHTMLs[this.state.position] === "") {
+        if(this.state.lineHTMLs[this.state.position] === ""){
           this.handleArray(Math.max(this.state.position - 1, 0), this.state.position, 1, null)
           evt.preventDefault();
         }

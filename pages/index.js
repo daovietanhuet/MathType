@@ -1,5 +1,6 @@
 import React from 'react';
-import {Box, Divider, IconButton} from 'gestalt';
+import {Box, Divider} from 'gestalt';
+import { FaPrint, FaFilePdf, FaSearch } from 'react-icons/fa';
 import EditLine from '../components/EditLine';
 import MathLine from '../components/MathLine';
 import "gestalt/dist/gestalt.css";
@@ -23,6 +24,10 @@ class Home extends React.Component {
     };
   }
 
+  componentDidMount() {
+    localStorage.setItem('docs', JSON.stringify([]));
+  }
+
   _handleArray = (newPos, pos, number, value) => {
     this.setState((state, props) => { 
       if(pos !== null && pos !== undefined) value !== null ? state.lineHTMLs.splice(pos, number, value) : state.lineHTMLs.splice(pos, number);
@@ -31,6 +36,12 @@ class Home extends React.Component {
         lineHTMLs: state.lineHTMLs.length === 0 ? [""] : state.lineHTMLs
       })
     })
+    if(pos !== null && pos !== undefined) {
+      let docs = JSON.parse(localStorage.getItem('docs'));
+      if(docs.length === 50) docs.shift();
+      docs.push(this.state.lineHTMLs)
+      localStorage.setItem('docs', JSON.stringify(docs));
+    }
   }
 
   _handleChange = (evt) => {
@@ -84,10 +95,14 @@ class Home extends React.Component {
 
   _handleTitleChange = (evt) => {
     this.setState({title: evt.target.value})
+    localStorage.setItem('title', evt.target.value)
   }
 
   _handleTitleBlur = (evt) => {
-    if(!evt.target.value || evt.target.value.trim() === "") this.setState({title: "Tài liệu không có tiêu đề"})
+    if(!evt.target.value || evt.target.value.trim() === "") {
+      this.setState({title: "Tài liệu không có tiêu đề"})
+      localStorage.setItem('title', "Tài liệu không có tiêu đề")
+    }
   }
 
   render() {
@@ -104,7 +119,9 @@ class Home extends React.Component {
                 onBlur={this.handleTitleBlur}
               ></input>
             </Box>
-            <IconButton></IconButton>
+            <Box marginRight={3}><FaSearch color="#4a90e2"/></Box>
+            <Box marginRight={3}><FaPrint color="#4a90e2"/></Box>
+            <Box marginRight={3}><FaFilePdf color="#4a90e2"/></Box>
           </Box>
           <Divider/>
           <Box marginTop={1}>

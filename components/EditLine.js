@@ -35,7 +35,7 @@ class EditLine extends React.Component {
                     onChange={this.onChange} 
                     onKeyDown={this.handleKeyDown}
                     onKeyPress={this.handleKeyPress}
-                    placeholder="Write Something Creative..."
+                    placeholder="Nhập ở đây..."
                     tagName='div' 
                     className="input"
                 />

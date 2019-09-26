@@ -1,5 +1,5 @@
 import React from 'react';
-import {Box} from 'gestalt';
+import {Box, Divider, IconButton} from 'gestalt';
 import EditLine from '../components/EditLine';
 import MathLine from '../components/MathLine';
 import "gestalt/dist/gestalt.css";
@@ -13,10 +13,13 @@ class Home extends React.Component {
     this.handleChange = this._handleChange.bind(this);
     this.createLines = this._createLines.bind(this);
     this.handleArray = this._handleArray.bind(this);
+    this.handleTitleChange = this._handleTitleChange.bind(this);
+    this.handleTitleBlur = this._handleTitleBlur.bind(this);
     this.editLine = React.createRef();
     this.state = {
       position: 0,
-      lineHTMLs: [""]
+      lineHTMLs: [""],
+      title: "Tài liệu không có tiêu đề"
     };
   }
 
@@ -50,7 +53,7 @@ class Home extends React.Component {
   _handleKeyDown = (evt) => {
     switch (evt.key) {
       case 'Backspace': 
-        if(this.state.lineHTMLs[this.state.position] === ""){
+        if(this.state.lineHTMLs[this.state.position].trim() === ""){
           this.handleArray(Math.max(this.state.position - 1, 0), this.state.position, 1, null)
           evt.preventDefault();
         }
@@ -79,12 +82,34 @@ class Home extends React.Component {
     });
   }
 
+  _handleTitleChange = (evt) => {
+    this.setState({title: evt.target.value})
+  }
+
+  _handleTitleBlur = (evt) => {
+    if(!evt.target.value || evt.target.value.trim() === "") this.setState({title: "Tài liệu không có tiêu đề"})
+  }
+
   render() {
     return (
       <Box display='flex'>
         <Box column={9}>
-          <Box>
+          <Box paddingY={3} paddingX={4} display="flex">
+            <Box flex="grow">
+              <input
+                className="title" 
+                value={this.state.title} 
+                placeholder="Tài liệu không có tiêu đề" 
+                onChange={this.handleTitleChange} 
+                onBlur={this.handleTitleBlur}
+              ></input>
+            </Box>
+            <IconButton></IconButton>
+          </Box>
+          <Divider/>
+          <Box marginTop={1}>
             {this.createLines()}
+            <Box height={"300px"}></Box>
           </Box>
         </Box>
         <Box column={3}>
@@ -92,7 +117,6 @@ class Home extends React.Component {
       </Box>
     );
   }
-
 }
 
 export default Home;

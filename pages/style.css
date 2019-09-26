@@ -54,3 +54,10 @@
     padding-bottom: auto;
     color: blue
 }
+
+.title, .title:focus {
+    border: none;
+    outline: none;
+    font-size: 1rem;
+    width: 100%;
+}
